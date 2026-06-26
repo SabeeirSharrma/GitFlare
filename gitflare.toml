@@ -1,0 +1,15 @@
+[server]
+host = "0.0.0.0"
+port = 3000
+repos_path = "/tmp/gitflare/repos"
+
+# Optional — only set if you want GitFlare to emit full clone URLs
+# base_url = "https://git.yourdomain.com"
+
+[auth]
+admin_token = "your-secret-admin-token"
+
+[ssh]
+enabled = true
+port = 2222
+authorized_keys_path = "/tmp/gitflare/authorized_keys"

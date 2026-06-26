@@ -1,0 +1,3 @@
+[console_scripts]
+gitflare = gitflare.main:run
+gitflare-admin = gitflare.admin:main

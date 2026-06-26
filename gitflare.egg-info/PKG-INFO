@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: gitflare
+Version: 0.1.0
+Summary: Self-hosted Git repository hosting server
+Author: The Cinder Project
+License: GPLv3
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi
+Requires-Dist: uvicorn[standard]
+Requires-Dist: pydantic
+Requires-Dist: bcrypt
+Requires-Dist: httpx
+Requires-Dist: keyring

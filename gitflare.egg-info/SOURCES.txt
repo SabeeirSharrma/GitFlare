@@ -1,0 +1,16 @@
+pyproject.toml
+gitflare/__init__.py
+gitflare/admin.py
+gitflare/config.py
+gitflare/main.py
+gitflare.egg-info/PKG-INFO
+gitflare.egg-info/SOURCES.txt
+gitflare.egg-info/dependency_links.txt
+gitflare.egg-info/entry_points.txt
+gitflare.egg-info/requires.txt
+gitflare.egg-info/top_level.txt
+gitflare/git/__init__.py
+gitflare/git/backend.py
+gitflare/git/repo.py
+gitflare/routes/__init__.py
+gitflare/routes/git_http.py

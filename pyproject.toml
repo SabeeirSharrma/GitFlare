@@ -1,0 +1,20 @@
+[project]
+name = "gitflare"
+version = "0.1.0"
+description = "Self-hosted Git repository hosting server"
+authors = [{ name = "The Cinder Project" }]
+license = { text = "GPLv3" }
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic",
+    "bcrypt",
+    "httpx",
+    "keyring",
+]
+
+[project.scripts]
+gitflare = "gitflare.main:run"
+gitflare-admin = "gitflare.admin:main"
