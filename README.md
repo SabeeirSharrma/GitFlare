@@ -108,10 +108,10 @@ gitflare/
 
 GPLv3 — see [LICENSE](LICENSE) for details.
 
-## The Cinder Project
+## Made By
 
-Made with intent to make the internet a safer place.
+Made under The CInder Project with intent to make the internet a safer place.
 
-- **Owner/Main Developer:** [Sabeeir Sharrma](https://github.com/sabeeirsharrma)
+- **Owner/Maintainer/Main Developer:** [Sabeeir Sharrma](https://github.com/sabeeirsharrma)
 - **Maintainer/Assistant Developer:** [trigered02](https://github.com/trigered02)
 - **Discord:** [Join us](https://discord.com/invite/3ZMtEgJjFT)
