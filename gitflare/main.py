@@ -15,12 +15,6 @@ app = FastAPI(
 app.include_router(git_http.router)
 
 
-@app.get("/")
-async def root():
-    """Health check endpoint."""
-    return {"status": "ok", "service": "gitflare"}
-
-
 def run():
     """Run the GitFlare server."""
     config = load_config()

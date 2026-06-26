@@ -9,6 +9,12 @@ from ..git.repo import repo_exists
 router = APIRouter()
 
 
+@router.get("/")
+async def root():
+    """Health check endpoint."""
+    return {"status": "ok", "service": "gitflare"}
+
+
 async def _handle_git_request(repo_path: str, request: Request) -> Response:
     """Common handler for all git HTTP requests."""
     from ..config import load_config
