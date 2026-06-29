@@ -44,16 +44,16 @@ def init_bare(repos_path: str, name: str, auth_mode: str = "ssh") -> Path:
 
 def delete_repo(repos_path: str, name: str) -> bool:
     """Delete a git repository.
-    
+
     Args:
         repos_path: Base path where repos are stored
         name: Repository name (without .git extension)
-    
+
     Returns:
         True if deleted, False if not found
     """
     import shutil
-    
+
     repo_path = Path(repos_path) / f"{name}.git"
     if repo_path.exists() and repo_path.is_dir():
         shutil.rmtree(repo_path)
@@ -63,17 +63,17 @@ def delete_repo(repos_path: str, name: str) -> bool:
 
 def list_repos(repos_path: str) -> list[str]:
     """List all repositories.
-    
+
     Args:
         repos_path: Base path where repos are stored
-    
+
     Returns:
         List of repository names (without .git extension)
     """
     repos_dir = Path(repos_path)
     if not repos_dir.exists():
         return []
-    
+
     return [
         p.stem
         for p in repos_dir.iterdir()

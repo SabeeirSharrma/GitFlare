@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [0.3.0] — 2026-06-26
+
+### Added
+
+- **SSH key management** — `auth/ssh.py` with `add_key()`, `list_keys()`, `remove_key()`
+- **SSH handler** — `git/ssh_handler.py` for git-shell integration with per-repo auth
+- **Admin SSH commands** — `gitflare-admin ssh-key add|list|remove`
+- **Ruff + mypy** — linting and type checking configured in `pyproject.toml`
+
+### Changed
+
+- Auth mode "ssh" repos now properly reject SSH push without authorized key
+
+---
+
 ## [0.2.0] — 2026-06-26
 
 ### Added

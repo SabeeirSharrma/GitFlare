@@ -2,6 +2,40 @@
 
 ---
 
+## v0.3.0 — SSH Key Auth
+
+**Date:** 2026-06-26
+
+GitFlare v0.3 adds SSH key authentication and per-repo key management. Users can now authenticate via SSH keys stored in the system authorized_keys file.
+
+### What's included
+
+- **SSH key management** — `gitflare-admin ssh-key add|list|remove` for managing authorized keys
+- **SSH handler** — `git/ssh_handler.py` validates SSH access and delegates to git-shell
+- **Per-repo key restriction** — keys are added with `git-shell -c` command restriction
+- **Linting + type checking** — ruff and mypy configured for code quality
+
+### Quick start
+
+```bash
+# Add an SSH key
+gitflare-admin ssh-key add "ssh-ed25519 AAAA..."
+
+# List keys
+gitflare-admin ssh-key list
+
+# Remove a key
+gitflare-admin ssh-key remove <key_id>
+```
+
+### What's next (v0.4)
+
+- Branch listing
+- Multi-repo support
+- Admin API with Bearer auth
+
+---
+
 ## v0.2.0 — Token Auth & Credential Helper
 
 **Date:** 2026-06-26
@@ -40,11 +74,11 @@ git push origin master  # just works, no prompts
 | `token` | Public | Token required |
 | `both` | Public | Token required |
 
-### What's next (v0.3)
+### What's next (v0.4)
 
-- SSH key auth
-- Per-repo SSH key management
-- `git-shell` integration
+- Branch listing
+- Multi-repo support
+- Admin API with Bearer auth
 
 ---
 
