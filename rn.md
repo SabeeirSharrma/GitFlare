@@ -2,6 +2,56 @@
 
 ---
 
+## v0.4.0 — Admin API & Branch Listing
+
+**Date:** 2026-06-26
+
+GitFlare v0.4 adds a full REST admin API with Bearer authentication, branch listing, and commit history endpoints.
+
+### What's included
+
+- **Admin REST API** — complete CRUD for repos, tokens, and SSH keys
+- **Bearer auth** — admin routes require `Authorization: Bearer <admin_token>`
+- **Branch listing** — `GET /admin/repos/{name}/branches`
+- **Commit history** — `GET /admin/repos/{name}/commits` with pagination
+
+### API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/admin/repos` | List all repos |
+| `POST` | `/admin/repos` | Create repo |
+| `DELETE` | `/admin/repos/{name}` | Delete repo |
+| `GET` | `/admin/repos/{name}/branches` | List branches |
+| `GET` | `/admin/repos/{name}/commits` | List commits |
+| `POST` | `/admin/repos/{name}/token` | Generate token |
+| `DELETE` | `/admin/repos/{name}/token` | Revoke tokens |
+| `GET` | `/admin/ssh-keys` | List SSH keys |
+| `POST` | `/admin/ssh-keys` | Add SSH key |
+| `DELETE` | `/admin/ssh-keys/{key_id}` | Remove SSH key |
+
+### Example
+
+```bash
+# List repos
+curl -H "Authorization: Bearer $ADMIN_TOKEN" http://localhost:3000/admin/repos
+
+# Create a repo
+curl -X POST -H "Authorization: Bearer $ADMIN_TOKEN" \
+  "http://localhost:3000/admin/repos?name=myproject&auth_mode=ssh"
+
+# List branches
+curl -H "Authorization: Bearer $ADMIN_TOKEN" \
+  http://localhost:3000/admin/repos/myproject/branches
+```
+
+### What's next (v0.5)
+
+- Stable core — full push/pull/branch over HTTP + SSH
+- Production hardening
+
+---
+
 ## v0.3.0 — SSH Key Auth
 
 **Date:** 2026-06-26
@@ -74,11 +124,10 @@ git push origin master  # just works, no prompts
 | `token` | Public | Token required |
 | `both` | Public | Token required |
 
-### What's next (v0.4)
+### What's next (v0.5)
 
-- Branch listing
-- Multi-repo support
-- Admin API with Bearer auth
+- Stable core — full push/pull/branch over HTTP + SSH
+- Production hardening
 
 ---
 
