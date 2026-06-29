@@ -17,10 +17,10 @@ GitFlare is a self-hosted Git repository hosting server built in Python. It sits
 |---------|-------|
 | v0.1 | HTTP clone/fetch (read-only), repo init, basic config |
 | v0.2 | HTTP push with token auth + `git-credential-gitflare` helper + `gitflare-admin login` |
-| v0.3 | SSH key auth, per-repo auth mode selection |
-| v0.4 | Branch listing, multi-repo support, admin CLI |
-| v0.5 | Stable core — full push/pull/branch over HTTP + SSH |
-| v1.0 | Web UI — file browser, commit log, branch switcher |
+| v0.3 | SSH key auth, per-repo auth mode selection, admin API, branch listing, commit history |
+| v0.4 | Stable core — structured logging, git hooks, ref management, health check |
+| v0.5 | Web UI for ease of access (EOA) |
+| v1.0 | Production-ready release |
 
 ---
 
@@ -32,6 +32,8 @@ gitflare/
 │   ├── __init__.py
 │   ├── main.py               # FastAPI app entrypoint
 │   ├── config.py             # Loads gitflare.toml
+│   ├── logging.py            # Structured logging + request middleware
+│   ├── models.py             # Pydantic models
 │   ├── auth/
 │   │   ├── __init__.py
 │   │   ├── tokens.py         # HTTP token auth
@@ -40,12 +42,12 @@ gitflare/
 │   │   ├── __init__.py
 │   │   ├── backend.py        # Wraps git http-backend via subprocess
 │   │   ├── repo.py           # Repo init, delete, list
+│   │   ├── hooks.py          # Git hooks (pre-receive, post-receive, update)
 │   │   └── ssh_handler.py    # git-shell integration
-│   ├── routes/
-│   │   ├── __init__.py
-│   │   ├── git_http.py       # Smart HTTP protocol routes
-│   │   └── admin.py          # Admin API (create/delete repos, manage tokens)
-│   └── models.py             # Pydantic models
+│   └── routes/
+│       ├── __init__.py
+│       ├── git_http.py       # Smart HTTP protocol routes
+│       └── admin.py          # Admin API (repos, branches, commits, hooks, tokens, ssh-keys)
 ├── gitflare-admin             # CLI tool (thin wrapper around admin API)
 ├── git-credential-gitflare    # Git credential helper binary (installed to PATH)
 ├── gitflare.toml              # Main config file
@@ -277,8 +279,16 @@ DELETE /admin/repos/{name}       # Delete repo
 GET    /admin/repos              # List repos
 POST   /admin/repos/{name}/token # Generate access token for repo
 DELETE /admin/repos/{name}/token # Revoke token
+GET    /admin/repos/{name}/branches   # List branches
+POST   /admin/repos/{name}/branches   # Create branch
+DELETE /admin/repos/{name}/branches/{branch}  # Delete branch
+GET    /admin/repos/{name}/commits    # List commits
+GET    /admin/repos/{name}/tags       # List tags
+GET    /admin/repos/{name}/hooks      # List installed hooks
+POST   /admin/repos/{name}/hooks/{hook}/test  # Test a hook
 POST   /admin/ssh-keys           # Add SSH key
 DELETE /admin/ssh-keys/{id}      # Remove SSH key
+GET    /admin/ssh-keys           # List SSH keys
 GET    /admin/auth/verify        # Validate a token (used by gitflare-admin login)
 ```
 

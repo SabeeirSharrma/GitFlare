@@ -15,7 +15,27 @@ router = APIRouter()
 @router.get("/")
 async def root():
     """Health check endpoint."""
-    return {"status": "ok", "service": "gitflare"}
+    import shutil
+
+    from ..config import load_config
+    from ..git.repo import list_repos
+
+    config = load_config()
+    repos = list_repos(config.server.repos_path)
+    disk = shutil.disk_usage(config.server.repos_path)
+
+    return {
+        "status": "ok",
+        "service": "gitflare",
+        "version": "0.4.0",
+        "repos": len(repos),
+        "repos_path": config.server.repos_path,
+        "disk": {
+            "total_gb": round(disk.total / (1024**3), 2),
+            "used_gb": round(disk.used / (1024**3), 2),
+            "free_gb": round(disk.free / (1024**3), 2),
+        },
+    }
 
 
 def _extract_token(request: Request) -> str | None:

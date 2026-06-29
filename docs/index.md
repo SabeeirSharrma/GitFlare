@@ -55,6 +55,16 @@ Full repo and token management from the command line:
 - Create, list, delete repos
 - Generate and revoke access tokens
 - Manage SSH keys
+- Create and delete branches
+- List tags
+
+### Git Hooks
+
+New repositories automatically get pre-receive, post-receive, and update hooks. The pre-receive hook rejects force pushes and branch deletion on `main`/`master`.
+
+### Structured Logging
+
+Every HTTP request is logged with method, path, status code, and response time in milliseconds.
 
 ### Lightweight
 
@@ -92,10 +102,10 @@ git clone http://localhost:3000/myproject.git
 |---------|-------|
 | v0.1 | HTTP clone/fetch/push, repo init, basic config, token infra |
 | v0.2 | HTTP push with token auth + credential helper + `gitflare-admin login` |
-| v0.3 | SSH key auth, per-repo auth mode selection |
-| v0.4 | Branch listing, multi-repo support, admin API |
-| v0.5 | Stable core — full push/pull/branch over HTTP + SSH |
-| v1.0 | Web UI — file browser, commit log, branch switcher |
+| v0.3 | SSH key auth, per-repo auth mode selection, admin API, branch listing |
+| v0.4 | Stable core — structured logging, git hooks, ref management, health check |
+| v0.5 | Web UI for ease of access (EOA) |
+| v1.0 | Production-ready release |
 
 ## Made By
 

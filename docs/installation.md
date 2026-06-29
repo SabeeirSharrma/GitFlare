@@ -44,7 +44,7 @@ Pre-built wheels and source distributions are available on the [Releases](https:
 ### Install from wheel
 
 ```bash
-pip install gitflare-0.3.0-py3-none-any.whl
+pip install gitflare-0.4.0-py3-none-any.whl
 ```
 
 ### Verify checksums

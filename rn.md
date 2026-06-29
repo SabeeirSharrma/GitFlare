@@ -2,6 +2,57 @@
 
 ---
 
+## v0.4.0 — Stable Core
+
+**Date:** 2026-06-29
+
+GitFlare v0.4 adds structured logging, request timing, git hooks support, branch/tag management, and an enhanced health check endpoint. This release focuses on production hardening and a stable core.
+
+### What's included
+
+- **Structured logging** — `RequestLogMiddleware` logs every HTTP request with method, path, status, and response time in milliseconds
+- **Git hooks** — new repos get `pre-receive`, `post-receive`, and `update` hooks by default
+  - `pre-receive` rejects force pushes and branch deletion on `main`/`master`
+- **Branch management** — create and delete branches via the admin API
+- **Tags listing** — list tags for any repo
+- **Hooks API** — list installed hooks and test them manually
+- **Health check** — `GET /` now returns version, repo count, and disk usage stats
+- **Lifecycle logging** — startup and shutdown events are logged
+
+### New API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/admin/repos/{name}/branches` | Create branch |
+| `DELETE` | `/admin/repos/{name}/branches/{branch}` | Delete branch |
+| `GET` | `/admin/repos/{name}/tags` | List tags |
+| `GET` | `/admin/repos/{name}/hooks` | List installed hooks |
+| `POST` | `/admin/repos/{name}/hooks/{hook}/test` | Test a hook |
+
+### Quick start
+
+```bash
+# Start the server
+uvicorn gitflare.main:app --host 0.0.0.0 --port 3000
+
+# Health check
+curl http://localhost:3000/
+
+# Create a branch
+curl -X POST -H "Authorization: Bearer $ADMIN_TOKEN" \
+  "http://localhost:3000/admin/repos/myproject/branches?branch=dev&ref=master"
+
+# Test pre-receive hook
+curl -X POST -H "Authorization: Bearer $ADMIN_TOKEN" \
+  "http://localhost:3000/admin/repos/myproject/hooks/pre-receive/test"
+```
+
+### What's next (v0.5)
+
+- Web UI for ease of access (EOA)
+
+---
+
 ## v0.3.0 — SSH, Admin API & Branch Listing
 
 **Date:** 2026-06-26
@@ -47,6 +98,42 @@ curl -H "Authorization: Bearer $ADMIN_TOKEN" http://localhost:3000/admin/repos/m
 
 ### What's next (v0.4)
 
-- Stable core — full push/pull/branch over HTTP + SSH
+- Stable core — structured logging, git hooks, ref management
 - Production hardening
-    
+
+---
+
+## v0.2.0 — Token Auth
+
+**Date:** 2026-06-26
+
+### Added
+
+- Token auth enforcement on push (HTTP Basic auth → bcrypt verify)
+- `GET /admin/auth/verify` endpoint for token validation
+- `gitflare-admin login` — stores token in system keychain + registers credential helper
+- `gitflare-admin logout` — removes token from keychain + unregisters helper
+
+### Changed
+
+- SSH-only repos (`auth_mode: "ssh"`) now reject push over HTTP with 403
+- Clone/fetch remains public for all auth modes (read-only access)
+
+---
+
+## v0.1.0 — Initial Release
+
+**Date:** 2026-06-26
+
+### Added
+
+- Core server — FastAPI + uvicorn, config loading from `gitflare.toml`
+- Git HTTP backend — subprocess wrapper for `git http-backend`, CGI response parsing
+- Smart HTTP routes — catch-all handler for clone/fetch/push over HTTP
+- Repo management — `git init --bare` wrapper, list, delete
+- Admin CLI — `gitflare-admin repo create|list|delete`, `gitflare-admin token generate|revoke`
+- Token infrastructure — per-repo `gitflare.json` metadata with `auth_mode`, `tokens[]`, `ssh_keys[]`
+- Auth module — `auth/tokens.py` with `generate_token()`, `hash_token()`, `verify_token()` using bcrypt
+- Credential helper — `git-credential-gitflare` for system keychain integration
+- Health check — `GET /` returns service status
+- SPEC.md — full architecture and project specification

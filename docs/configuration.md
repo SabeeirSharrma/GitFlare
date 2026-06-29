@@ -63,7 +63,7 @@ Optional. If set, GitFlare will use this URL when generating clone URLs in admin
 
 ### `admin_token`
 
-The admin token is used for Bearer authentication on admin API routes. In v0.4+, this will be required for all admin API calls.
+The admin token is used for Bearer authentication on admin API routes. All admin API calls require this token.
 
 For now, the admin token is used by `gitflare-admin login` to validate credentials before storing them.
 

@@ -18,6 +18,8 @@ def init_bare(repos_path: str, name: str, auth_mode: str = "ssh") -> Path:
     Returns:
         Path to the created repository
     """
+    from .hooks import install_hooks
+
     repo_path = Path(repos_path) / f"{name}.git"
     repo_path.mkdir(parents=True, exist_ok=True)
 
@@ -38,6 +40,9 @@ def init_bare(repos_path: str, name: str, auth_mode: str = "ssh") -> Path:
     metadata = RepoMetadata(name=name, auth_mode=auth_mode)
     with open(repo_path / "gitflare.json", "w") as f:
         json.dump(metadata.model_dump(), f, indent=2)
+
+    # Install default hooks
+    install_hooks(repo_path)
 
     return repo_path
 

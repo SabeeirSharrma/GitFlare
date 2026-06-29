@@ -12,6 +12,7 @@ from ..git.repo import (
     get_metadata,
     init_bare,
     list_repos,
+    repo_exists,
     save_metadata,
 )
 from ..models import AdminResponse, TokenResponse
@@ -216,3 +217,125 @@ def remove_ssh_key(key_id: str, _: None = Depends(_verify_admin_auth)) -> AdminR
     if remove_key(key_id):
         return AdminResponse(success=True, message=f"SSH key {key_id} removed")
     raise HTTPException(status_code=404, detail="Key not found")
+
+
+# --- Ref management endpoints ---
+
+@router.post("/repos/{name}/branches")
+def create_branch(
+    name: str,
+    branch: str = Query(...),
+    ref: str = Query("HEAD"),
+    _: None = Depends(_verify_admin_auth),
+) -> AdminResponse:
+    """Create a new branch in a repository."""
+    config = load_config()
+    repo_path = f"{config.server.repos_path}/{name}.git"
+
+    try:
+        subprocess.run(
+            ["git", "-C", repo_path, "branch", branch, ref],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return AdminResponse(success=True, message=f"Branch '{branch}' created from '{ref}'")
+    except subprocess.CalledProcessError as e:
+        detail = e.stderr.strip() if e.stderr else str(e)
+        raise HTTPException(status_code=400, detail=detail)
+
+
+@router.delete("/repos/{name}/branches/{branch}")
+def delete_branch(
+    name: str,
+    branch: str,
+    _: None = Depends(_verify_admin_auth),
+) -> AdminResponse:
+    """Delete a branch from a repository."""
+    config = load_config()
+    repo_path = f"{config.server.repos_path}/{name}.git"
+
+    try:
+        subprocess.run(
+            ["git", "-C", repo_path, "branch", "-d", branch],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return AdminResponse(success=True, message=f"Branch '{branch}' deleted")
+    except subprocess.CalledProcessError as e:
+        detail = e.stderr.strip() if e.stderr else str(e)
+        raise HTTPException(status_code=400, detail=detail)
+
+
+# --- Tags endpoints ---
+
+@router.get("/repos/{name}/tags")
+def list_tags(name: str, _: None = Depends(_verify_admin_auth)) -> list[dict]:
+    """List tags in a repository."""
+    config = load_config()
+    repo_path = f"{config.server.repos_path}/{name}.git"
+
+    try:
+        result = subprocess.run(
+            ["git", "-C", repo_path, "tag", "-l", "--format=%(refname:short)|%(objectname:short)"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        tags = []
+        for line in result.stdout.splitlines():
+            if not line.strip():
+                continue
+            parts = line.split("|", 1)
+            tags.append({
+                "name": parts[0],
+                "commit": parts[1] if len(parts) > 1 else "",
+            })
+        return tags
+    except subprocess.CalledProcessError:
+        raise HTTPException(status_code=404, detail="Repository not found or empty")
+
+
+# --- Hooks endpoints ---
+
+@router.get("/repos/{name}/hooks")
+def list_hooks_endpoint(name: str, _: None = Depends(_verify_admin_auth)) -> list[dict]:
+    """List installed hooks for a repository."""
+    from pathlib import Path
+
+    from ..git.hooks import list_hooks
+
+    config = load_config()
+    repo_path = Path(config.server.repos_path) / f"{name}.git"
+
+    if not repo_exists(config.server.repos_path, name):
+        raise HTTPException(status_code=404, detail="Repository not found")
+
+    return list_hooks(repo_path)
+
+
+@router.post("/repos/{name}/hooks/{hook_name}/test")
+def test_hook(
+    name: str,
+    hook_name: str,
+    _: None = Depends(_verify_admin_auth),
+) -> dict:
+    """Run a hook manually to test it."""
+    from pathlib import Path
+
+    from ..git.hooks import run_hook
+
+    config = load_config()
+    repo_path = Path(config.server.repos_path) / f"{name}.git"
+
+    if not repo_exists(config.server.repos_path, name):
+        raise HTTPException(status_code=404, detail="Repository not found")
+
+    result = run_hook(repo_path, hook_name)
+    return {
+        "hook": hook_name,
+        "returncode": result["returncode"],
+        "stdout": result["stdout"],
+        "stderr": result["stderr"],
+    }

@@ -1,8 +1,8 @@
 """Git HTTP backend wrapper."""
 
-import subprocess
-import os
 import asyncio
+import os
+import subprocess
 from pathlib import Path
 
 from fastapi import Request, Response

@@ -142,6 +142,7 @@ gitflare/
 ├── gitflare/
 │   ├── main.py               # FastAPI app entrypoint
 │   ├── config.py             # Loads gitflare.toml
+│   ├── logging.py            # Structured logging + request middleware
 │   ├── models.py             # Pydantic models
 │   ├── auth/
 │   │   ├── tokens.py         # Token generation & bcrypt hashing
@@ -149,10 +150,11 @@ gitflare/
 │   ├── git/
 │   │   ├── backend.py        # Wraps git http-backend via subprocess
 │   │   ├── repo.py           # Repo init, delete, list, metadata
+│   │   ├── hooks.py          # Git hooks (pre-receive, post-receive, update)
 │   │   └── ssh_handler.py    # git-shell integration
 │   └── routes/
 │       ├── git_http.py       # Smart HTTP protocol routes + token auth
-│       └── admin.py          # Admin API (/admin/auth/verify)
+│       └── admin.py          # Admin API (repos, branches, commits, hooks, tokens, ssh-keys)
 ├── git-credential-gitflare    # Git credential helper
 ├── gitflare.toml              # Config file
 ├── pyproject.toml

@@ -12,8 +12,11 @@ GitFlare is a lean, self-hosted Git server built in Python. It sits as a thin la
 
 - **HTTP Smart Protocol** — full clone/fetch/push over HTTP
 - **Token-based auth** — per-repo access tokens with bcrypt hashing, enforced on push
+- **SSH key auth** — manage SSH keys via the admin CLI
 - **Credential helper** — `git-credential-gitflare` stores tokens in your system keychain (no plaintext)
-- **Admin CLI** — `gitflare-admin login/logout`, repo and token management
+- **Admin CLI** — `gitflare-admin login/logout`, repo, token, SSH key, branch, and hook management
+- **Git hooks** — default pre-receive hook rejects force push to main/master
+- **Structured logging** — every request logged with timing
 - **Bare repos** — standard Git bare repos, nothing proprietary
 - **Lightweight** — FastAPI + uvicorn, no database, no ORM, flat JSON metadata
 
@@ -109,16 +112,19 @@ gitflare/
 ├── gitflare/
 │   ├── main.py               # FastAPI app entrypoint
 │   ├── config.py             # Loads gitflare.toml
+│   ├── logging.py            # Structured logging + request middleware
 │   ├── models.py             # Pydantic models
 │   ├── auth/
 │   │   ├── tokens.py         # Token generation & bcrypt hashing
 │   │   └── ssh.py            # SSH key management
 │   ├── git/
 │   │   ├── backend.py        # Wraps git http-backend via subprocess
-│   │   └── repo.py           # Repo init, delete, list, metadata
+│   │   ├── repo.py           # Repo init, delete, list, metadata
+│   │   ├── hooks.py          # Git hooks (pre-receive, post-receive, update)
+│   │   └── ssh_handler.py    # git-shell integration
 │   └── routes/
 │       ├── git_http.py       # Smart HTTP protocol routes + token auth
-│       └── admin.py          # Admin API (/admin/auth/verify)
+│       └── admin.py          # Admin API (repos, branches, commits, hooks, tokens, ssh-keys)
 ├── git-credential-gitflare    # Git credential helper
 ├── gitflare.toml              # Config file
 ├── pyproject.toml
@@ -132,10 +138,10 @@ gitflare/
 |---------|-------|
 | v0.1 | HTTP clone/fetch/push, repo init, basic config, token infra |
 | v0.2 | HTTP push with token auth + credential helper + `gitflare-admin login` |
-| v0.3 | SSH key auth, per-repo auth mode selection |
-| v0.4 | Branch listing, multi-repo support, admin API |
-| v0.5 | Stable core — full push/pull/branch over HTTP + SSH |
-| v1.0 | Web UI — file browser, commit log, branch switcher |
+| v0.3 | SSH key auth, per-repo auth mode selection, admin API, branch listing |
+| v0.4 | Stable core — structured logging, git hooks, ref management, health check |
+| v0.5 | Web UI for ease of access (EOA) |
+| v1.0 | Production-ready release |
 
 ## License
 

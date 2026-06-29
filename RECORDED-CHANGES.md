@@ -6,24 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
-## [0.4.0] — 2026-06-26
+## [0.4.0] — 2026-06-29
 
 ### Added
 
-- **Admin REST API** — full CRUD endpoints with Bearer auth
-  - `GET /admin/repos` — list repos
-  - `POST /admin/repos` — create repo
-  - `DELETE /admin/repos/{name}` — delete repo
-  - `GET /admin/repos/{name}/branches` — list branches
-  - `GET /admin/repos/{name}/commits` — list commits
-  - `POST /admin/repos/{name}/token` — generate token
-  - `DELETE /admin/repos/{name}/token` — revoke tokens
-  - `GET /admin/ssh-keys` — list SSH keys
-  - `POST /admin/ssh-keys` — add SSH key
-  - `DELETE /admin/ssh-keys/{key_id}` — remove SSH key
-- **Bearer auth** — admin routes require `Authorization: Bearer <admin_token>`
-- **Branch listing** — list branches for any repo
-- **Commit listing** — list recent commits with hash, message, author, date
+- **Structured logging** — `logging.py` with `setup_logging()` and `RequestLogMiddleware` for request timing
+- **Request logging middleware** — every HTTP request logged with method, path, status, and response time
+- **Git hooks support** — `git/hooks.py` with `install_hooks()`, `list_hooks()`, `remove_hook()`, `run_hook()`
+  - Default hooks: `pre-receive` (rejects force push to main/master), `post-receive`, `update`
+- **Ref management API** — branch and tag management endpoints:
+  - `POST /admin/repos/{name}/branches` — create branch
+  - `DELETE /admin/repos/{name}/branches/{branch}` — delete branch
+  - `GET /admin/repos/{name}/tags` — list tags
+- **Hooks API** — hook management endpoints:
+  - `GET /admin/repos/{name}/hooks` — list installed hooks
+  - `POST /admin/repos/{name}/hooks/{hook}/test` — test a hook manually
+- **Health check** — enhanced `GET /` with version, repo count, disk usage stats
+- **Lifecycle events** — startup/shutdown logging via FastAPI events
+
+### Changed
+
+- Admin API now includes all endpoints from v0.3.0 plus ref and hook management
+- New repos automatically get default hooks installed on creation
+- Request logging includes timing in milliseconds
 
 ---
 
