@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [0.2.0] — 2026-06-26
+
+### Added
+
+- **Token auth enforcement** — push requests now require valid token for `auth_mode` "token" or "both"
+- **Admin auth route** — `GET /admin/auth/verify` validates tokens against stored bcrypt hashes
+- **`gitflare-admin login`** — stores token in system keychain and registers credential helper in `~/.gitconfig`
+- **`gitflare-admin logout`** — erases token from keychain and removes gitconfig entry
+
+### Changed
+
+- SSH-only repos (`auth_mode: "ssh"`) reject push over HTTP with 403
+- Clone/fetch remains public for all auth modes (read-only access)
+
+---
+
 ## [0.1.0] — 2026-06-26
 
 ### Added
