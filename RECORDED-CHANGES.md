@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [0.4.0] — 2026-06-26
+
+### Added
+
+- **Admin REST API** — full CRUD endpoints with Bearer auth
+  - `GET /admin/repos` — list repos
+  - `POST /admin/repos` — create repo
+  - `DELETE /admin/repos/{name}` — delete repo
+  - `GET /admin/repos/{name}/branches` — list branches
+  - `GET /admin/repos/{name}/commits` — list commits
+  - `POST /admin/repos/{name}/token` — generate token
+  - `DELETE /admin/repos/{name}/token` — revoke tokens
+  - `GET /admin/ssh-keys` — list SSH keys
+  - `POST /admin/ssh-keys` — add SSH key
+  - `DELETE /admin/ssh-keys/{key_id}` — remove SSH key
+- **Bearer auth** — admin routes require `Authorization: Bearer <admin_token>`
+- **Branch listing** — list branches for any repo
+- **Commit listing** — list recent commits with hash, message, author, date
+
+---
+
 ## [0.3.0] — 2026-06-26
 
 ### Added

@@ -9,7 +9,7 @@ from .routes import admin, git_http
 app = FastAPI(
     title="GitFlare",
     description="Self-hosted Git repository hosting server",
-    version="0.3.0",
+    version="0.4.0",
 )
 
 app.include_router(admin.router)
