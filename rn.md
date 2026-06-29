@@ -2,18 +2,21 @@
 
 ---
 
-## v0.4.0 — Admin API & Branch Listing
+## v0.3.0 — SSH, Admin API & Branch Listing
 
 **Date:** 2026-06-26
 
-GitFlare v0.4 adds a full REST admin API with Bearer authentication, branch listing, and commit history endpoints.
+GitFlare v0.3 adds SSH key authentication, a full REST admin API with Bearer auth, branch listing, and commit history endpoints. This release consolidates SSH support, the admin API, and repository management into a single stable release.
 
 ### What's included
 
-- **Admin REST API** — complete CRUD for repos, tokens, and SSH keys
-- **Bearer auth** — admin routes require `Authorization: Bearer <admin_token>`
+- **SSH key management** — `gitflare-admin ssh-key add|list|remove` for managing authorized keys
+- **SSH handler** — `git/ssh_handler.py` validates SSH access and delegates to git-shell
+- **Per-repo key restriction** — keys are added with `git-shell -c` command restriction
+- **Admin REST API** — complete CRUD for repos, tokens, and SSH keys with Bearer auth
 - **Branch listing** — `GET /admin/repos/{name}/branches`
 - **Commit history** — `GET /admin/repos/{name}/commits` with pagination
+- **Linting + type checking** — ruff and mypy configured for code quality
 
 ### API Endpoints
 
@@ -30,59 +33,22 @@ GitFlare v0.4 adds a full REST admin API with Bearer authentication, branch list
 | `POST` | `/admin/ssh-keys` | Add SSH key |
 | `DELETE` | `/admin/ssh-keys/{key_id}` | Remove SSH key |
 
-### Example
-
-```bash
-# List repos
-curl -H "Authorization: Bearer $ADMIN_TOKEN" http://localhost:3000/admin/repos
-
-# Create a repo
-curl -X POST -H "Authorization: Bearer $ADMIN_TOKEN" \
-  "http://localhost:3000/admin/repos?name=myproject&auth_mode=ssh"
-
-# List branches
-curl -H "Authorization: Bearer $ADMIN_TOKEN" \
-  http://localhost:3000/admin/repos/myproject/branches
-```
-
-### What's next (v0.5)
-
-- Stable core — full push/pull/branch over HTTP + SSH
-- Production hardening
-
----
-
-## v0.3.0 — SSH Key Auth
-
-**Date:** 2026-06-26
-
-GitFlare v0.3 adds SSH key authentication and per-repo key management. Users can now authenticate via SSH keys stored in the system authorized_keys file.
-
-### What's included
-
-- **SSH key management** — `gitflare-admin ssh-key add|list|remove` for managing authorized keys
-- **SSH handler** — `git/ssh_handler.py` validates SSH access and delegates to git-shell
-- **Per-repo key restriction** — keys are added with `git-shell -c` command restriction
-- **Linting + type checking** — ruff and mypy configured for code quality
-
 ### Quick start
 
 ```bash
-# Add an SSH key
+# SSH key management
 gitflare-admin ssh-key add "ssh-ed25519 AAAA..."
-
-# List keys
 gitflare-admin ssh-key list
 
-# Remove a key
-gitflare-admin ssh-key remove <key_id>
+# Admin API (set ADMIN_TOKEN from gitflare.toml)
+curl -H "Authorization: Bearer $ADMIN_TOKEN" http://localhost:3000/admin/repos
+curl -H "Authorization: Bearer $ADMIN_TOKEN" http://localhost:3000/admin/repos/myproject/branches
 ```
 
 ### What's next (v0.4)
 
-- Branch listing
-- Multi-repo support
-- Admin API with Bearer auth
+- Stable core — full push/pull/branch over HTTP + SSH
+- Production hardening
 
 ---
 
@@ -123,11 +89,6 @@ git push origin master  # just works, no prompts
 | `ssh` | Public | 403 (use SSH) |
 | `token` | Public | Token required |
 | `both` | Public | Token required |
-
-### What's next (v0.5)
-
-- Stable core — full push/pull/branch over HTTP + SSH
-- Production hardening
 
 ---
 

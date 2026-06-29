@@ -401,4 +401,4 @@ Token auth + `git-credential-gitflare` + `gitflare-admin login` come in v0.2 onc
 - **Org:** The Cinder Project
 - **Accent color:** `#FF4500` (ember orange, consistent with CPAC/CinderOS)
 - **License:** GPLv3
-- **Repo:** `github.com/TheCinderProject/gitflare` (ironic temporary home until it hosts itself)
+- **Repo:** `github.com/SabeeirSharrma/GitFlare` (ironic temporary home until it hosts itself)

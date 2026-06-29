@@ -22,7 +22,7 @@ GitFlare is a lean, self-hosted Git server built in Python. It sits as a thin la
 ### Install
 
 ```bash
-git clone https://github.com/TheCinderProject/gitflare.git
+git clone https://github.com/SabeeirSharrma/GitFlare.git
 cd gitflare
 python -m venv .venv
 source .venv/bin/activate
@@ -63,7 +63,7 @@ GitFlare is built transparently from source. **No pre-compiled code is embedded 
 ### Building from source (recommended)
 
 ```bash
-git clone https://github.com/TheCinderProject/gitflare.git
+git clone https://github.com/SabeeirSharrma/GitFlare.git
 cd gitflare
 python -m venv .venv
 source .venv/bin/activate
@@ -72,7 +72,7 @@ pip install -e .
 
 ### Pre-built artifacts
 
-Pre-built wheels and source distributions are available on the [Releases](https://github.com/TheCinderProject/gitflare/releases) page. While functional, **building from source is the recommended and preferred method** — it ensures full transparency and allows you to inspect the code before installation.
+Pre-built wheels and source distributions are available on the [Releases](https://github.com/SabeeirSharrma/GitFlare/releases) page. While functional, **building from source is the recommended and preferred method** — it ensures full transparency and allows you to inspect the code before installation.
 
 Checksums (`sha256sums.txt`) are provided with every release for verification:
 

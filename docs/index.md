@@ -64,7 +64,7 @@ FastAPI + uvicorn, no database, no ORM, flat JSON metadata. Just bare Git repos 
 
 ```bash
 # Clone and install
-git clone https://github.com/TheCinderProject/gitflare.git
+git clone https://github.com/SabeeirSharrma/GitFlare.git
 cd gitflare
 python -m venv .venv
 source .venv/bin/activate
