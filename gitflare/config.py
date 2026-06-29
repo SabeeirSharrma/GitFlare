@@ -1,8 +1,8 @@
 """Configuration loader for GitFlare."""
 
 import tomllib
-from pathlib import Path
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Optional
 
 
@@ -37,21 +37,21 @@ def load_config(config_path: Optional[Path] = None) -> Config:
     """Load configuration from gitflare.toml."""
     if config_path is None:
         config_path = Path("gitflare.toml")
-    
+
     if not config_path.exists():
         return Config(
             server=ServerConfig(),
             auth=AuthConfig(),
             ssh=SSHConfig(),
         )
-    
+
     with open(config_path, "rb") as f:
         data = tomllib.load(f)
-    
+
     server_data = data.get("server", {})
     auth_data = data.get("auth", {})
     ssh_data = data.get("ssh", {})
-    
+
     return Config(
         server=ServerConfig(
             host=server_data.get("host", "0.0.0.0"),

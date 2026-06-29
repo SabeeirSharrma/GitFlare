@@ -1,6 +1,7 @@
 """Token generation and validation for GitFlare."""
 
 import secrets
+
 import bcrypt
 
 

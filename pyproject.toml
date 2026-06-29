@@ -1,6 +1,6 @@
 [project]
 name = "gitflare"
-version = "0.2.0"
+version = "0.3.0"
 description = "Self-hosted Git repository hosting server"
 authors = [{ name = "The Cinder Project" }]
 license = { text = "GPLv3" }
@@ -18,3 +18,16 @@ dependencies = [
 [project.scripts]
 gitflare = "gitflare.main:run"
 gitflare-admin = "gitflare.admin:main"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+warn_return_any = true
+warn_unused_configs = true

@@ -95,6 +95,11 @@ gitflare-admin repo delete <name>
 # Token management
 gitflare-admin token generate <repo>
 gitflare-admin token revoke <repo>
+
+# SSH key management
+gitflare-admin ssh-key add "ssh-ed25519 AAAA..."
+gitflare-admin ssh-key list
+gitflare-admin ssh-key remove <key_id>
 ```
 
 ## Project Structure
@@ -107,7 +112,7 @@ gitflare/
 │   ├── models.py             # Pydantic models
 │   ├── auth/
 │   │   ├── tokens.py         # Token generation & bcrypt hashing
-│   │   └── ssh.py            # SSH key management (v0.3)
+│   │   └── ssh.py            # SSH key management
 │   ├── git/
 │   │   ├── backend.py        # Wraps git http-backend via subprocess
 │   │   └── repo.py           # Repo init, delete, list, metadata

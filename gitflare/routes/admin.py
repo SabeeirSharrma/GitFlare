@@ -2,9 +2,9 @@
 
 from fastapi import APIRouter, Query, Response
 
-from ..git.repo import get_metadata
 from ..auth.tokens import verify_token
 from ..config import load_config
+from ..git.repo import get_metadata
 
 router = APIRouter(prefix="/admin")
 

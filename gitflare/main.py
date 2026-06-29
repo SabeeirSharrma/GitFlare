@@ -4,13 +4,12 @@ import uvicorn
 from fastapi import FastAPI
 
 from .config import load_config
-from .routes import git_http
-from .routes import admin
+from .routes import admin, git_http
 
 app = FastAPI(
     title="GitFlare",
     description="Self-hosted Git repository hosting server",
-    version="0.2.0",
+    version="0.3.0",
 )
 
 app.include_router(admin.router)

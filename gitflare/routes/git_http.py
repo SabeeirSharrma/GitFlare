@@ -1,12 +1,13 @@
 """Git HTTP protocol routes."""
 
-import re
 import base64
+import re
+
 from fastapi import APIRouter, Request, Response
 
-from ..git.backend import run_git_backend
-from ..git.repo import repo_exists, get_metadata
 from ..auth.tokens import verify_token
+from ..git.backend import run_git_backend
+from ..git.repo import get_metadata, repo_exists
 
 router = APIRouter()
 

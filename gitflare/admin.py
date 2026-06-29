@@ -2,7 +2,6 @@
 
 import argparse
 import getpass
-import subprocess
 import sys
 from pathlib import Path
 from urllib.parse import urlparse
@@ -56,6 +55,21 @@ def main():
     revoke_parser = token_subparsers.add_parser("revoke", help="Revoke all tokens for a repo")
     revoke_parser.add_argument("repo", help="Repository name")
 
+    # SSH key commands
+    ssh_parser = subparsers.add_parser("ssh-key", help="SSH key management")
+    ssh_subparsers = ssh_parser.add_subparsers(dest="ssh_command")
+
+    # ssh-key add
+    add_key_parser = ssh_subparsers.add_parser("add", help="Add an SSH public key")
+    add_key_parser.add_argument("key", help="SSH public key (e.g. ssh-ed25519 AAAA...)")
+
+    # ssh-key list
+    ssh_subparsers.add_parser("list", help="List all SSH keys")
+
+    # ssh-key remove
+    remove_key_parser = ssh_subparsers.add_parser("remove", help="Remove an SSH key by ID")
+    remove_key_parser.add_argument("key_id", help="Key ID (from ssh-key list)")
+
     args = parser.parse_args()
 
     if not args.command:
@@ -84,6 +98,15 @@ def main():
             revoke_tokens(config, args.repo)
         else:
             token_parser.print_help()
+    elif args.command == "ssh-key":
+        if args.ssh_command == "add":
+            add_ssh_key(args.key)
+        elif args.ssh_command == "list":
+            list_ssh_keys()
+        elif args.ssh_command == "remove":
+            remove_ssh_key(args.key_id)
+        else:
+            ssh_parser.print_help()
     else:
         parser.print_help()
 
@@ -113,7 +136,6 @@ def login(url: str):
     try:
         resp = httpx.get(verify_url, params={"repo": "_", "token": token}, timeout=10)
         if resp.status_code == 404:
-            # Server is up, token format is valid (repo _ doesn't exist but that's ok for login)
             pass
         elif resp.status_code == 200:
             pass
@@ -142,7 +164,6 @@ def login(url: str):
         content = ""
 
     if credential_section in content:
-        # Section exists, check if helper is already set
         lines = content.split("\n")
         new_lines = []
         in_section = False
@@ -213,7 +234,7 @@ def logout(url: str):
                     new_lines.append(line)
             gitconfig.write_text("\n".join(new_lines))
 
-    print(f"✓ Removed credential helper entry from ~/.gitconfig")
+    print("✓ Removed credential helper entry from ~/.gitconfig")
 
 
 def create_repo(config, name: str, auth_mode: str):
@@ -231,7 +252,7 @@ def create_repo(config, name: str, auth_mode: str):
 
 def list_repos(config):
     """List all repositories."""
-    from .git.repo import list_repos, get_metadata
+    from .git.repo import get_metadata, list_repos
 
     repos = list_repos(config.server.repos_path)
     if repos:
@@ -257,8 +278,9 @@ def delete_repo(config, name: str):
 
 def generate_token(config, repo_name: str):
     """Generate an access token for a repository."""
+    from .auth.tokens import generate_token as gen
+    from .auth.tokens import hash_token
     from .git.repo import get_metadata, save_metadata
-    from .auth.tokens import generate_token as gen, hash_token
 
     meta = get_metadata(config.server.repos_path, repo_name)
     if not meta:
@@ -289,6 +311,43 @@ def revoke_tokens(config, repo_name: str):
     save_metadata(config.server.repos_path, repo_name, meta)
 
     print(f"✓ Revoked {count} token(s) for '{repo_name}'")
+
+
+def add_ssh_key(key: str):
+    """Add an SSH public key."""
+    from .auth.ssh import add_key
+
+    try:
+        key_id = add_key(key)
+        print(f"✓ SSH key added (ID: {key_id})")
+    except ValueError as e:
+        print(f"✗ {e}")
+        sys.exit(1)
+
+
+def list_ssh_keys():
+    """List all SSH keys."""
+    from .auth.ssh import list_keys
+
+    keys = list_keys()
+    if keys:
+        print("SSH Keys:")
+        for k in keys:
+            comment = k["comment"] or "(no comment)"
+            print(f"  [{k['id']}] {k['key_type']} {comment}")
+    else:
+        print("No SSH keys found.")
+
+
+def remove_ssh_key(key_id: str):
+    """Remove an SSH key by ID."""
+    from .auth.ssh import remove_key
+
+    if remove_key(key_id):
+        print(f"✓ SSH key {key_id} removed")
+    else:
+        print(f"✗ Key {key_id} not found")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
