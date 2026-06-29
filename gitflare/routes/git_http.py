@@ -1,10 +1,12 @@
 """Git HTTP protocol routes."""
 
 import re
+import base64
 from fastapi import APIRouter, Request, Response
 
 from ..git.backend import run_git_backend
-from ..git.repo import repo_exists
+from ..git.repo import repo_exists, get_metadata
+from ..auth.tokens import verify_token
 
 router = APIRouter()
 
@@ -13,6 +15,38 @@ router = APIRouter()
 async def root():
     """Health check endpoint."""
     return {"status": "ok", "service": "gitflare"}
+
+
+def _extract_token(request: Request) -> str | None:
+    """Extract token from Basic auth header.
+
+    Git sends: Authorization: Basic base64(gitflare:<token>)
+    """
+    auth_header = request.headers.get("authorization", "")
+    if not auth_header.startswith("Basic "):
+        return None
+
+    try:
+        decoded = base64.b64decode(auth_header[6:]).decode()
+        username, _, password = decoded.partition(":")
+        if username == "gitflare" and password:
+            return password
+    except Exception:
+        return None
+
+    return None
+
+
+def _is_push_request(request: Request) -> bool:
+    """Check if this is a push (git-receive-pack) request."""
+    path = request.url.path
+    query = request.url.query
+
+    if "git-receive-pack" in path:
+        return True
+    if "service=git-receive-pack" in query:
+        return True
+    return False
 
 
 async def _handle_git_request(repo_path: str, request: Request) -> Response:
@@ -29,6 +63,30 @@ async def _handle_git_request(repo_path: str, request: Request) -> Response:
 
     if not repo_exists(config.server.repos_path, repo_name):
         return Response(status_code=404, content="Repository not found")
+
+    # Token auth enforcement for push
+    if _is_push_request(request):
+        meta = get_metadata(config.server.repos_path, repo_name)
+        if meta and meta.auth_mode in ("token", "both"):
+            token = _extract_token(request)
+            if not token:
+                return Response(
+                    status_code=401,
+                    content="Authentication required",
+                    headers={"WWW-Authenticate": 'Basic realm="GitFlare"'},
+                )
+            valid = any(verify_token(token, h) for h in meta.tokens)
+            if not valid:
+                return Response(
+                    status_code=401,
+                    content="Invalid token",
+                    headers={"WWW-Authenticate": 'Basic realm="GitFlare"'},
+                )
+        elif meta and meta.auth_mode == "ssh":
+            return Response(
+                status_code=403,
+                content="Push over HTTP not allowed for this repository. Use SSH.",
+            )
 
     return await run_git_backend(config.server.repos_path, repo_name, request)
 

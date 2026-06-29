@@ -11,9 +11,9 @@ GitFlare is a lean, self-hosted Git server built in Python. It sits as a thin la
 ## Features
 
 - **HTTP Smart Protocol** — full clone/fetch/push over HTTP
-- **Token-based auth** — per-repo access tokens with bcrypt hashing
+- **Token-based auth** — per-repo access tokens with bcrypt hashing, enforced on push
 - **Credential helper** — `git-credential-gitflare` stores tokens in your system keychain (no plaintext)
-- **Admin CLI** — create repos, manage tokens, list repos
+- **Admin CLI** — `gitflare-admin login/logout`, repo and token management
 - **Bare repos** — standard Git bare repos, nothing proprietary
 - **Lightweight** — FastAPI + uvicorn, no database, no ORM, flat JSON metadata
 
@@ -56,9 +56,37 @@ gitflare-admin repo create myproject --auth ssh
 git clone http://localhost:3000/myproject.git
 ```
 
+## Transparency & Installation
+
+GitFlare is built transparently from source. **No pre-compiled code is embedded in this repository.** Every line of code is auditable before installation.
+
+### Building from source (recommended)
+
+```bash
+git clone https://github.com/TheCinderProject/gitflare.git
+cd gitflare
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
+### Pre-built artifacts
+
+Pre-built wheels and source distributions are available on the [Releases](https://github.com/TheCinderProject/gitflare/releases) page. While functional, **building from source is the recommended and preferred method** — it ensures full transparency and allows you to inspect the code before installation.
+
+Checksums (`sha256sums.txt`) are provided with every release for verification:
+
+```bash
+sha256sum -c sha256sums.txt
+```
+
 ## Admin CLI
 
 ```bash
+# Auth — one-time setup on client machine
+gitflare-admin login http://yourhost:3000   # store token in keychain
+gitflare-admin logout http://yourhost:3000  # remove from keychain
+
 # Repo management
 gitflare-admin repo create <name> [--auth ssh|token|both]
 gitflare-admin repo list
@@ -84,8 +112,8 @@ gitflare/
 │   │   ├── backend.py        # Wraps git http-backend via subprocess
 │   │   └── repo.py           # Repo init, delete, list, metadata
 │   └── routes/
-│       ├── git_http.py       # Smart HTTP protocol routes
-│       └── admin.py          # Admin API (v0.4+)
+│       ├── git_http.py       # Smart HTTP protocol routes + token auth
+│       └── admin.py          # Admin API (/admin/auth/verify)
 ├── git-credential-gitflare    # Git credential helper
 ├── gitflare.toml              # Config file
 ├── pyproject.toml

@@ -5,13 +5,15 @@ from fastapi import FastAPI
 
 from .config import load_config
 from .routes import git_http
+from .routes import admin
 
 app = FastAPI(
     title="GitFlare",
     description="Self-hosted Git repository hosting server",
-    version="0.1.0",
+    version="0.2.0",
 )
 
+app.include_router(admin.router)
 app.include_router(git_http.router)
 
 

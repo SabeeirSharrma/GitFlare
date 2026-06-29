@@ -1,0 +1,127 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build tools
+        run: pip install build
+
+      - name: Build sdist and wheel
+        run: python -m build
+
+      - name: Prepare standalone scripts
+        run: |
+          cp git-credential-gitflare git-credential-gitflare-dist
+          chmod +x git-credential-gitflare-dist
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: |
+            dist/
+            git-credential-gitflare-dist
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Determine pre-release
+        id: prerelease
+        run: |
+          TAG="${GITHUB_REF#refs/tags/v}"
+          if [[ "$TAG" == *"-"* ]]; then
+            echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate checksums
+        run: |
+          cd dist
+          sha256sum git-credential-gitflare-dist > sha256sums.txt
+          sha256sum dist/* >> sha256sums.txt
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          prerelease: ${{ steps.prerelease.outputs.is_prerelease }}
+          generate_release_notes: true
+          body: |
+            ## Building from Source (Recommended)
+
+            GitFlare is built transparently from source. No pre-compiled code is embedded in this repository.
+
+            ```bash
+            git clone https://github.com/TheCinderProject/gitflare.git
+            cd gitflare
+            python -m venv .venv
+            source .venv/bin/activate
+            pip install -e .
+            ```
+
+            Or install directly from the sdist:
+
+            ```bash
+            pip install ${{ github.event_name == 'push' && format('https://github.com/TheCinderProject/gitflare/archive/refs/tags/{0}.tar.gz', github.ref_name) || '.' }}
+            ```
+
+            ## Pre-built Artifacts
+
+            > **These artifacts are provided for checksum verification only.**
+            > While functional, building from source is the recommended and preferred method.
+            > This ensures full transparency — you can inspect every line of code before installation.
+
+            | Artifact | Description |
+            |----------|-------------|
+            | `gitflare-*.tar.gz` | Source distribution |
+            | `gitflare-*.whl` | Pre-built wheel (convenience only) |
+            | `git-credential-gitflare-dist` | Credential helper script |
+            | `sha256sums.txt` | SHA-256 checksums for verification |
+
+            ## Verify Checksums
+
+            ```bash
+            sha256sum -c sha256sums.txt
+            ```
+
+            ## The Cinder Project
+
+            Made with intent to make the internet a safer place.
+
+            ${{ github.event.head_commit.message }}
+          files: |
+            dist/dist/*
+            dist/git-credential-gitflare-dist
+            dist/sha256sums.txt
