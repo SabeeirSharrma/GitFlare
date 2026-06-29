@@ -32,7 +32,7 @@ def _verify_admin_auth(authorization: str = Header(None)) -> None:
     if not config.auth.admin_token:
         raise HTTPException(status_code=500, detail="Admin token not configured")
 
-    if not verify_token(token, config.auth.admin_token):
+    if token != config.auth.admin_token:
         raise HTTPException(status_code=403, detail="Invalid admin token")
 
 
