@@ -19,7 +19,7 @@ GitFlare is designed to run on a VPS with minimal setup. This guide covers syste
 
 ```bash
 # On the VPS
-git clone https://github.com/TheCinderProject/gitflare.git /opt/gitflare
+git clone https://github.com/SabeeirSharrma/GitFlare.git /opt/gitflare
 cd /opt/gitflare
 python -m venv .venv
 source .venv/bin/activate

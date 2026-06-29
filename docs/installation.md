@@ -21,7 +21,7 @@ GitFlare is built transparently from source. No pre-compiled code is embedded in
 ### Install
 
 ```bash
-git clone https://github.com/TheCinderProject/gitflare.git
+git clone https://github.com/SabeeirSharrma/GitFlare.git
 cd gitflare
 python -m venv .venv
 source .venv/bin/activate
@@ -39,7 +39,7 @@ gitflare-admin --help
 
 ## Pre-built Artifacts
 
-Pre-built wheels and source distributions are available on the [Releases](https://github.com/TheCinderProject/gitflare/releases) page. While functional, **building from source is the recommended and preferred method** — it ensures full transparency and allows you to inspect the code before installation.
+Pre-built wheels and source distributions are available on the [Releases](https://github.com/SabeeirSharrma/GitFlare/releases) page. While functional, **building from source is the recommended and preferred method** — it ensures full transparency and allows you to inspect the code before installation.
 
 ### Install from wheel
 
