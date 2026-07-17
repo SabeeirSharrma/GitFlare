@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitFlare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark-dimmed.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span class="material-symbols-outlined">local_fire_department</span>
+                </div>
+                <div class="sidebar-brand">
+                    <h1 class="sidebar-title">GitFlare</h1>
+                    <span class="sidebar-subtitle">The Cinder Project</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav">
+                <a href="/" class="sidebar-item active" data-page="repos">
+                    <span class="material-symbols-outlined">folder</span>
+                    <span>Repositories</span>
+                </a>
+                <a href="/health" class="sidebar-item" data-page="health" target="_blank">
+                    <span class="material-symbols-outlined">monitor_heart</span>
+                    <span>Health</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-divider"></div>
+                <a href="https://github.com/SabeeirSharrma/GitFlare" class="sidebar-item" target="_blank">
+                    <span class="material-symbols-outlined">code</span>
+                    <span>Source</span>
+                </a>
+                <a href="/ui/api/repos" class="sidebar-item" target="_blank">
+                    <span class="material-symbols-outlined">api</span>
+                    <span>API</span>
+                </a>
+            </div>
+        </aside>
+        <main class="main-content" id="app">
+            <div class="loading">
+                <span class="material-symbols-outlined spinning">progress_activity</span>
+            </div>
+        </main>
+    </div>
+    <script src="/static/app.js"></script>
+</body>
+</html>

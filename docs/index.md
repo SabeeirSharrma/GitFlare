@@ -66,6 +66,16 @@ New repositories automatically get pre-receive, post-receive, and update hooks. 
 
 Every HTTP request is logged with method, path, status code, and response time in milliseconds.
 
+### Web UI
+
+Browse your repositories in a browser. Features:
+- Repository listing with latest commit info
+- Repository overview with branches, tags, and recent commits
+- File browser with breadcrumb navigation
+- File content viewer with line count
+- Commit log per branch
+- Dark theme with ember orange accent
+
 ### Lightweight
 
 FastAPI + uvicorn, no database, no ORM, flat JSON metadata. Just bare Git repos with a `gitflare.json` file for auth configuration.
@@ -104,7 +114,7 @@ git clone http://localhost:3000/myproject.git
 | v0.2 | HTTP push with token auth + credential helper + `gitflare-admin login` |
 | v0.3 | SSH key auth, per-repo auth mode selection, admin API, branch listing |
 | v0.4 | Stable core — structured logging, git hooks, ref management, health check |
-| v0.5 | Web UI for ease of access (EOA) |
+| v0.5 | Web UI — repo browser, file tree, commit log, branch switcher |
 | v1.0 | Production-ready release |
 
 ## Made By

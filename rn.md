@@ -2,6 +2,59 @@
 
 ---
 
+## v0.5.0 — Web UI
+
+**Date:** 2026-07-17
+
+GitFlare v0.5 adds a web interface for browsing repositories. Browse your repos, view files, check commit logs, and switch branches — all from your browser.
+
+### What's included
+
+- **Web UI** — static SPA served at `/` with dark theme
+  - Repository listing with latest commit info
+  - Repository overview (branches, tags, recent commits)
+  - File browser with breadcrumb navigation
+  - File content viewer with line count
+  - Commit log per branch
+  - Binary file detection
+- **UI API endpoints** — read-only, no auth required
+- **Clone URL copy** — one-click copy for clone URLs
+
+### New API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/ui/api/repos` | List repos with metadata |
+| `GET` | `/ui/api/repos/{name}` | Repo detail (branches, tags, commits) |
+| `GET` | `/ui/api/repos/{name}/tree/{ref}` | File tree at ref |
+| `GET` | `/ui/api/repos/{name}/tree/{ref}/{path}` | File tree at path |
+| `GET` | `/ui/api/repos/{name}/blob/{ref}/{path}` | File content |
+| `GET` | `/ui/api/repos/{name}/commits/{ref}` | Commit log |
+
+### Changed
+
+- Health check moved from `GET /` to `GET /health`
+- Web UI now served at `GET /`
+
+### Quick start
+
+```bash
+# Start the server
+uvicorn gitflare.main:app --host 0.0.0.0 --port 3000
+
+# Open in browser
+open http://localhost:3000/
+
+# Health check (moved)
+curl http://localhost:3000/health
+```
+
+### What's next (v1.0)
+
+- Production-ready release
+
+---
+
 ## v0.4.0 — Stable Core
 
 **Date:** 2026-06-29
@@ -49,7 +102,7 @@ curl -X POST -H "Authorization: Bearer $ADMIN_TOKEN" \
 
 ### What's next (v0.5)
 
-- Web UI for ease of access (EOA)
+- Web UI — repo browser, file tree, commit log, branch switcher
 
 ---
 

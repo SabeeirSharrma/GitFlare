@@ -12,8 +12,8 @@ from ..git.repo import get_metadata, repo_exists
 router = APIRouter()
 
 
-@router.get("/")
-async def root():
+@router.get("/health")
+async def health_check():
     """Health check endpoint."""
     import shutil
 
@@ -22,20 +22,29 @@ async def root():
 
     config = load_config()
     repos = list_repos(config.server.repos_path)
-    disk = shutil.disk_usage(config.server.repos_path)
 
-    return {
+    disk = None
+    try:
+        disk = shutil.disk_usage(config.server.repos_path)
+    except (FileNotFoundError, OSError):
+        pass
+
+    result = {
         "status": "ok",
         "service": "gitflare",
-        "version": "0.4.0",
+        "version": "0.5.0",
         "repos": len(repos),
         "repos_path": config.server.repos_path,
-        "disk": {
+    }
+
+    if disk:
+        result["disk"] = {
             "total_gb": round(disk.total / (1024**3), 2),
             "used_gb": round(disk.used / (1024**3), 2),
             "free_gb": round(disk.free / (1024**3), 2),
-        },
-    }
+        }
+
+    return result
 
 
 def _extract_token(request: Request) -> str | None:

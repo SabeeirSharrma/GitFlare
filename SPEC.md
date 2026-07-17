@@ -19,7 +19,7 @@ GitFlare is a self-hosted Git repository hosting server built in Python. It sits
 | v0.2 | HTTP push with token auth + `git-credential-gitflare` helper + `gitflare-admin login` |
 | v0.3 | SSH key auth, per-repo auth mode selection, admin API, branch listing, commit history |
 | v0.4 | Stable core — structured logging, git hooks, ref management, health check |
-| v0.5 | Web UI for ease of access (EOA) |
+| v0.5 | Web UI — repo browser, file tree, commit log, branch switcher |
 | v1.0 | Production-ready release |
 
 ---
@@ -44,10 +44,15 @@ gitflare/
 │   │   ├── repo.py           # Repo init, delete, list
 │   │   ├── hooks.py          # Git hooks (pre-receive, post-receive, update)
 │   │   └── ssh_handler.py    # git-shell integration
-│   └── routes/
-│       ├── __init__.py
-│       ├── git_http.py       # Smart HTTP protocol routes
-│       └── admin.py          # Admin API (repos, branches, commits, hooks, tokens, ssh-keys)
+│   ├── routes/
+│   │   ├── __init__.py
+│   │   ├── git_http.py       # Smart HTTP protocol routes
+│   │   ├── admin.py          # Admin API (repos, branches, commits, hooks, tokens, ssh-keys)
+│   │   └── ui.py             # Web UI routes + API endpoints
+│   └── static/
+│       ├── index.html        # Main SPA page
+│       ├── style.css         # Dark theme styles
+│       └── app.js            # Client-side routing and rendering
 ├── gitflare-admin             # CLI tool (thin wrapper around admin API)
 ├── git-credential-gitflare    # Git credential helper binary (installed to PATH)
 ├── gitflare.toml              # Main config file
@@ -269,9 +274,9 @@ def run_git_backend(repo_path: str, request: Request) -> Response:
 
 ---
 
-## Admin API (v0.4+)
+## Admin API (v0.5+)
 
-All routes require `Authorization: Bearer <admin_token>`.
+All admin routes require `Authorization: Bearer <admin_token>`.
 
 ```
 POST   /admin/repos              # Create repo
@@ -291,6 +296,29 @@ DELETE /admin/ssh-keys/{id}      # Remove SSH key
 GET    /admin/ssh-keys           # List SSH keys
 GET    /admin/auth/verify        # Validate a token (used by gitflare-admin login)
 ```
+
+## Web UI API (v0.5+)
+
+Read-only, no auth required. Used by the web interface.
+
+```
+GET    /ui/api/repos                          # List repos with metadata
+GET    /ui/api/repos/{name}                   # Repo detail (branches, tags, commits)
+GET    /ui/api/repos/{name}/tree/{ref}        # File tree at ref root
+GET    /ui/api/repos/{name}/tree/{ref}/{path} # File tree at ref + path
+GET    /ui/api/repos/{name}/blob/{ref}/{path} # File content
+GET    /ui/api/repos/{name}/commits/{ref}     # Commit log
+GET    /                                       # Web UI (repo list)
+GET    /health                                # Health check
+```
+
+The web UI is a static SPA served at `/`. It provides:
+- Repository listing with latest commit info
+- Repository overview (branches, tags, recent commits)
+- File browser with breadcrumb navigation
+- File content viewer (with line count)
+- Commit log per branch
+- Dark theme with ember orange accent
 
 ---
 

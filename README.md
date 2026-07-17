@@ -17,6 +17,7 @@ GitFlare is a lean, self-hosted Git server built in Python. It sits as a thin la
 - **Admin CLI** — `gitflare-admin login/logout`, repo, token, SSH key, branch, and hook management
 - **Git hooks** — default pre-receive hook rejects force push to main/master
 - **Structured logging** — every request logged with timing
+- **Web UI** — browse repos, view files, commit logs, branches, and tags in your browser
 - **Bare repos** — standard Git bare repos, nothing proprietary
 - **Lightweight** — FastAPI + uvicorn, no database, no ORM, flat JSON metadata
 
@@ -140,7 +141,7 @@ gitflare/
 | v0.2 | HTTP push with token auth + credential helper + `gitflare-admin login` |
 | v0.3 | SSH key auth, per-repo auth mode selection, admin API, branch listing |
 | v0.4 | Stable core — structured logging, git hooks, ref management, health check |
-| v0.5 | Web UI for ease of access (EOA) |
+| v0.5 | Web UI — repo browser, file tree, commit log, branch switcher |
 | v1.0 | Production-ready release |
 
 ## License

@@ -6,6 +6,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [0.5.0] — 2026-07-17
+
+### Added
+
+- **Web UI** — static SPA for browsing repositories in a browser:
+  - Repository listing with latest commit info
+  - Repository overview with branches, tags, and recent commits
+  - File browser with breadcrumb navigation
+  - File content viewer with line count and binary detection
+  - Commit log per branch
+  - Dark theme with ember orange `#FF4500` accent
+- **UI API endpoints** (read-only, no auth required):
+  - `GET /ui/api/repos` — list repos with metadata
+  - `GET /ui/api/repos/{name}` — repo detail (branches, tags, commits)
+  - `GET /ui/api/repos/{name}/tree/{ref}` — file tree at ref
+  - `GET /ui/api/repos/{name}/blob/{ref}/{path}` — file content
+  - `GET /ui/api/repos/{name}/commits/{ref}` — commit log
+- **Static file serving** — `static/` directory with `index.html`, `style.css`, `app.js`
+- **Health check moved** — `GET /health` (was `GET /`)
+
+### Changed
+
+- Health check endpoint moved from `GET /` to `GET /health` to serve Web UI at root
+- Web UI served at `GET /` via the new UI router
+
+---
+
 ## [0.4.0] — 2026-06-29
 
 ### Added

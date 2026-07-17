@@ -1,0 +1,1232 @@
+:root {
+    /* Forge & Flux color system */
+    --surface: #10141a;
+    --surface-dim: #10141a;
+    --surface-bright: #353940;
+    --surface-container-lowest: #0a0e14;
+    --surface-container-low: #181c22;
+    --surface-container: #1c2026;
+    --surface-container-high: #262a31;
+    --surface-container-highest: #31353c;
+    --on-surface: #dfe2eb;
+    --on-surface-variant: #c0c7d4;
+    --outline: #8b919d;
+    --outline-variant: #414752;
+    --primary: #a2c9ff;
+    --primary-container: #58a6ff;
+    --on-primary: #00315c;
+    --on-primary-container: #003a6b;
+    --secondary: #ffb4a6;
+    --secondary-container: #a51500;
+    --on-secondary: #660900;
+    --on-secondary-container: #ffb4a5;
+    --tertiary: #67df70;
+    --tertiary-container: #40ba51;
+    --on-tertiary: #00390d;
+    --on-tertiary-container: #004411;
+    --error: #ffb4ab;
+    --error-container: #93000a;
+    --on-error-container: #ffdad6;
+
+    /* Layout */
+    --sidebar-width: 260px;
+    --header-height: 56px;
+    --container-max: 1280px;
+
+    /* Typography */
+    --font-body: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-code: 'JetBrains Mono', monospace;
+
+    /* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+
+    /* Radius */
+    --radius-sm: 2px;
+    --radius-md: 4px;
+    --radius-lg: 6px;
+    --radius-xl: 8px;
+    --radius-full: 9999px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    background: var(--surface);
+    color: var(--on-surface);
+    line-height: 1.5;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    vertical-align: middle;
+    font-size: 20px;
+}
+
+/* ============================================================
+   GITLAB STYLE — Sidebar layout
+   ============================================================ */
+
+body.style-gitlab .app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+body.style-gitlab .sidebar {
+    width: var(--sidebar-width);
+    background: var(--surface-container-low);
+    border-right: 1px solid var(--outline-variant);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 50;
+}
+
+body.style-gitlab .sidebar-header {
+    padding: var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+body.style-gitlab .sidebar-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-lg);
+    background: var(--secondary-container);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.style-gitlab .sidebar-logo .material-symbols-outlined {
+    color: var(--on-secondary-container);
+    font-size: 24px;
+}
+
+body.style-gitlab .sidebar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--on-surface);
+    line-height: 1.2;
+}
+
+body.style-gitlab .sidebar-subtitle {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--on-surface-variant);
+}
+
+body.style-gitlab .sidebar-nav {
+    flex: 1;
+    padding: 0 var(--space-sm);
+}
+
+body.style-gitlab .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    color: var(--on-surface-variant);
+    font-size: 13px;
+    border-radius: var(--radius-md);
+    transition: all 0.15s;
+    text-decoration: none;
+    position: relative;
+}
+
+body.style-gitlab .sidebar-item:hover {
+    background: var(--surface-container-high);
+    color: var(--on-surface);
+    text-decoration: none;
+}
+
+body.style-gitlab .sidebar-item.active {
+    background: rgba(88, 166, 255, 0.1);
+    color: var(--primary);
+}
+
+body.style-gitlab .sidebar-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    background: var(--primary);
+    border-radius: 0 4px 4px 0;
+}
+
+body.style-gitlab .sidebar-item .material-symbols-outlined {
+    font-size: 20px;
+}
+
+body.style-gitlab .sidebar-footer {
+    padding: var(--space-sm);
+    border-top: 1px solid var(--outline-variant);
+}
+
+body.style-gitlab .sidebar-divider {
+    display: none;
+}
+
+body.style-gitlab .main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    min-height: 100vh;
+}
+
+/* ============================================================
+   GITHUB STYLE — Top nav layout
+   ============================================================ */
+
+body.style-github .app-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body.style-github .sidebar {
+    display: none;
+}
+
+body.style-github .main-content {
+    flex: 1;
+}
+
+/* Top nav bar for GitHub style */
+body.style-github .top-bar {
+    background: var(--surface-container-low);
+    border-bottom: 1px solid var(--outline-variant);
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    padding: 0 var(--space-md);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    gap: var(--space-lg);
+}
+
+body.style-github .top-bar-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    text-decoration: none;
+}
+
+body.style-github .top-bar-brand:hover {
+    text-decoration: none;
+}
+
+body.style-github .top-bar-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    background: var(--secondary-container);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.style-github .top-bar-logo .material-symbols-outlined {
+    color: var(--on-secondary-container);
+    font-size: 20px;
+}
+
+body.style-github .top-bar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--on-surface);
+}
+
+body.style-github .top-bar-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+body.style-github .top-bar-nav a {
+    padding: var(--space-sm) var(--space-md);
+    color: var(--on-surface-variant);
+    font-size: 14px;
+    border-radius: var(--radius-md);
+    transition: all 0.15s;
+    text-decoration: none;
+}
+
+body.style-github .top-bar-nav a:hover {
+    background: var(--surface-container-high);
+    color: var(--on-surface);
+    text-decoration: none;
+}
+
+body.style-github .top-bar-nav a.active {
+    color: var(--on-surface);
+    font-weight: 500;
+}
+
+body.style-github .top-bar-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+body.style-github .top-bar-actions a,
+body.style-github .top-bar-actions button {
+    padding: 6px 12px;
+    color: var(--on-surface-variant);
+    font-size: 13px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--outline-variant);
+    background: var(--surface-container-high);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+body.style-github .top-bar-actions a:hover,
+body.style-github .top-bar-actions button:hover {
+    background: var(--surface-container-highest);
+    color: var(--on-surface);
+}
+
+body.style-github .top-bar-actions .material-symbols-outlined {
+    font-size: 16px;
+}
+
+/* ============================================================
+   Shared components
+   ============================================================ */
+
+.page-container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: var(--space-lg);
+}
+
+/* Loading */
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    color: var(--on-surface-variant);
+}
+
+.spinning {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Repo list */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+}
+
+.page-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.page-header .count {
+    font-size: 13px;
+    color: var(--on-surface-variant);
+}
+
+.repo-grid {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.repo-card {
+    background: var(--surface-container-low);
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-xl);
+    padding: var(--space-md);
+    transition: border-color 0.15s, background 0.15s;
+    cursor: pointer;
+}
+
+.repo-card:hover {
+    border-color: var(--primary);
+    background: var(--surface-container);
+}
+
+.repo-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-sm);
+}
+
+.repo-card-name {
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.repo-card-name a {
+    color: var(--primary);
+}
+
+.repo-card-name .material-symbols-outlined {
+    font-size: 18px;
+    color: var(--on-surface-variant);
+}
+
+.auth-badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    background: var(--surface-container-highest);
+    border: 1px solid var(--outline-variant);
+    color: var(--on-surface-variant);
+}
+
+.repo-card-meta {
+    display: flex;
+    gap: var(--space-md);
+    font-size: 13px;
+    color: var(--on-surface-variant);
+    margin-bottom: var(--space-sm);
+}
+
+.repo-card-latest {
+    font-size: 13px;
+    color: var(--on-surface-variant);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--outline-variant);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.repo-card-latest .commit-hash {
+    font-family: var(--font-code);
+    font-size: 12px;
+    background: var(--surface-container-highest);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    color: var(--on-surface);
+}
+
+.repo-card-latest .commit-msg {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.repo-card-latest .commit-meta {
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 48px;
+    color: var(--on-surface-variant);
+}
+
+.empty-state code {
+    font-family: var(--font-code);
+    font-size: 13px;
+    background: var(--surface-container-highest);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+}
+
+/* Repo detail */
+.repo-header {
+    margin-bottom: var(--space-lg);
+}
+
+.repo-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-md);
+}
+
+.repo-header-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.repo-header-title .material-symbols-outlined {
+    font-size: 28px;
+    color: var(--on-surface-variant);
+}
+
+.repo-header-title a {
+    color: var(--primary);
+}
+
+.repo-header-actions {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.clone-box {
+    background: var(--surface-container);
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-lg);
+    padding: var(--space-sm) var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+}
+
+.clone-box label {
+    color: var(--on-surface-variant);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.clone-url {
+    flex: 1;
+    font-family: var(--font-code);
+    font-size: 13px;
+    background: var(--surface-container-lowest);
+    padding: 6px 10px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--outline-variant);
+    color: var(--on-surface);
+    outline: none;
+}
+
+.clone-url:focus {
+    border-color: var(--primary);
+}
+
+.btn {
+    padding: 6px 12px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-family: var(--font-body);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--primary-container);
+    color: var(--on-primary-container);
+    border: none;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-secondary {
+    background: var(--surface-container-high);
+    color: var(--on-surface);
+    border: 1px solid var(--outline-variant);
+}
+
+.btn-secondary:hover {
+    background: var(--surface-container-highest);
+}
+
+.btn .material-symbols-outlined {
+    font-size: 16px;
+}
+
+/* Stats overview */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+}
+
+.stat-card {
+    background: var(--surface-container-low);
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-xl);
+    padding: var(--space-md);
+    transition: all 0.15s;
+}
+
+.stat-card:hover {
+    border-color: var(--primary);
+}
+
+.stat-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--outline);
+    margin-bottom: var(--space-xs);
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--on-surface);
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--outline-variant);
+    margin-bottom: var(--space-lg);
+    overflow-x: auto;
+}
+
+.tab {
+    padding: var(--space-sm) var(--space-md);
+    color: var(--on-surface-variant);
+    font-size: 13px;
+    font-family: var(--font-body);
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    background: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    white-space: nowrap;
+    transition: all 0.15s;
+}
+
+.tab:hover {
+    color: var(--on-surface);
+    background: var(--surface-container-high);
+}
+
+.tab.active {
+    color: var(--on-surface);
+    border-bottom-color: var(--primary);
+    font-weight: 500;
+}
+
+.tab .material-symbols-outlined {
+    font-size: 16px;
+}
+
+.tab-count {
+    font-size: 11px;
+    background: var(--surface-container-highest);
+    padding: 1px 6px;
+    border-radius: var(--radius-full);
+    color: var(--on-surface-variant);
+}
+
+/* Content grid (2/3 + 1/3) */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: var(--space-lg);
+}
+
+.content-grid.full {
+    grid-template-columns: 1fr;
+}
+
+/* File explorer */
+.file-explorer {
+    background: var(--surface-container-low);
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+}
+
+.file-explorer-header {
+    background: var(--surface-container-high);
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--outline-variant);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.file-explorer-header .commit-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 13px;
+}
+
+.file-explorer-header .commit-info img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+.file-explorer-header .commit-info .commit-hash {
+    font-family: var(--font-code);
+    font-size: 12px;
+    background: var(--surface-container-highest);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+}
+
+.file-list {
+    list-style: none;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--outline-variant);
+    transition: background 0.1s;
+    cursor: pointer;
+}
+
+.file-item:last-child {
+    border-bottom: none;
+}
+
+.file-item:hover {
+    background: var(--surface-container-high);
+}
+
+.file-icon {
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.file-icon .material-symbols-outlined {
+    font-size: 20px;
+}
+
+.file-icon.dir .material-symbols-outlined {
+    color: var(--primary);
+}
+
+.file-icon.file .material-symbols-outlined {
+    color: var(--on-surface-variant);
+}
+
+.file-name {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.file-name a {
+    color: var(--on-surface);
+}
+
+.file-name a:hover {
+    color: var(--primary);
+}
+
+.file-commit-msg {
+    flex: 1;
+    font-size: 13px;
+    color: var(--on-surface-variant);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: none;
+}
+
+.file-date {
+    font-size: 13px;
+    color: var(--outline);
+    white-space: nowrap;
+    display: none;
+}
+
+/* Show extra columns in GitLab style */
+body.style-gitlab .file-commit-msg,
+body.style-gitlab .file-date {
+    display: block;
+}
+
+body.style-gitlab .file-item {
+    display: grid;
+    grid-template-columns: 32px 1fr 1fr auto;
+    gap: var(--space-md);
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
+    font-size: 14px;
+}
+
+.breadcrumb a {
+    color: var(--primary);
+}
+
+.breadcrumb .sep {
+    color: var(--outline);
+}
+
+.breadcrumb .current {
+    color: var(--on-surface);
+    font-weight: 600;
+}
+
+/* File content viewer */
+.file-header {
+    background: var(--surface-container-high);
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--outline-variant);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.file-header .file-path {
+    font-family: var(--font-code);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.file-header .file-info {
+    font-size: 13px;
+    color: var(--on-surface-variant);
+}
+
+.file-header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.btn-sm .material-symbols-outlined {
+    font-size: 14px;
+}
+
+/* Code viewer with line numbers */
+.code-viewer {
+    display: flex;
+    background: var(--surface-container-lowest);
+    overflow-x: auto;
+}
+
+.line-numbers-col {
+    padding: var(--space-md);
+    padding-right: var(--space-md);
+    border-right: 1px solid var(--outline-variant);
+    user-select: none;
+    text-align: right;
+    font-family: var(--font-code);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--outline);
+    min-width: 48px;
+}
+
+.line-numbers-col .ln {
+    display: block;
+}
+
+.code-content {
+    flex: 1;
+    margin: 0;
+    padding: var(--space-md);
+    font-family: var(--font-code);
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    background: transparent !important;
+}
+
+.code-content code {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+/* Markdown body (GitHub-style) */
+.markdown-body {
+    padding: var(--space-lg);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--on-surface);
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--outline-variant);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    margin-top: 24px;
+}
+
+.markdown-body h2 {
+    font-size: 20px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--outline-variant);
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+    margin-top: 24px;
+}
+
+.markdown-body h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    margin-top: 20px;
+}
+
+.markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-weight: 600;
+    margin-bottom: 8px;
+    margin-top: 16px;
+}
+
+.markdown-body p {
+    margin-bottom: 16px;
+}
+
+.markdown-body a {
+    color: var(--primary);
+}
+
+.markdown-body code {
+    font-family: var(--font-code);
+    font-size: 13px;
+    background: var(--surface-container-highest);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+}
+
+.markdown-body pre {
+    background: var(--surface-container-lowest);
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    margin-bottom: 16px;
+    overflow-x: auto;
+}
+
+.markdown-body pre code {
+    background: transparent;
+    padding: 0;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.markdown-body ul, .markdown-body ol {
+    margin-bottom: 16px;
+    padding-left: var(--space-lg);
+}
+
+.markdown-body li {
+    margin-bottom: 4px;
+}
+
+.markdown-body blockquote {
+    border-left: 4px solid var(--primary-container);
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: 16px;
+    color: var(--on-surface-variant);
+    background: var(--surface-container);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.markdown-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+}
+
+.markdown-body th, .markdown-body td {
+    border: 1px solid var(--outline-variant);
+    padding: var(--space-sm) var(--space-md);
+    text-align: left;
+}
+
+.markdown-body th {
+    background: var(--surface-container-high);
+    font-weight: 600;
+}
+
+.markdown-body tr:nth-child(even) {
+    background: var(--surface-container);
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid var(--outline-variant);
+    margin: 24px 0;
+}
+
+.markdown-body img {
+    max-width: 100%;
+    border-radius: var(--radius-lg);
+}
+
+.markdown-body .task-list-item {
+    list-style: none;
+    margin-left: -20px;
+}
+
+.markdown-body .task-list-item input {
+    margin-right: 8px;
+}
+
+.binary-notice {
+    padding: 32px;
+    text-align: center;
+    color: var(--on-surface-variant);
+}
+
+/* Sidebar panels (right side) */
+.sidebar-panel {
+    background: var(--surface-container-low);
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-xl);
+    padding: var(--space-md);
+}
+
+.sidebar-panel + .sidebar-panel {
+    margin-top: var(--space-md);
+}
+
+.sidebar-panel-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar-panel-title .count {
+    font-size: 11px;
+    background: var(--surface-container-highest);
+    padding: 1px 6px;
+    border-radius: var(--radius-full);
+    color: var(--on-surface-variant);
+}
+
+/* Commit list */
+.commit-list {
+    list-style: none;
+}
+
+.commit-item {
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--outline-variant);
+}
+
+.commit-item:last-child {
+    border-bottom: none;
+}
+
+.commit-message {
+    font-size: 13px;
+    margin-bottom: 2px;
+}
+
+.commit-meta {
+    display: flex;
+    gap: var(--space-sm);
+    font-size: 12px;
+    color: var(--on-surface-variant);
+}
+
+.commit-hash {
+    font-family: var(--font-code);
+    color: var(--primary);
+}
+
+/* Activity timeline */
+.activity-timeline {
+    position: relative;
+    padding-left: var(--space-lg);
+}
+
+.activity-timeline::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: var(--outline-variant);
+}
+
+.activity-item {
+    position: relative;
+    margin-bottom: var(--space-md);
+}
+
+.activity-item:last-child {
+    margin-bottom: 0;
+}
+
+.activity-dot {
+    position: absolute;
+    left: calc(-1 * var(--space-lg) + 6px);
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--surface);
+}
+
+.activity-dot.primary { background: var(--primary); }
+.activity-dot.secondary { background: var(--secondary); }
+.activity-dot.tertiary { background: var(--tertiary-container); }
+
+.activity-text {
+    font-size: 13px;
+}
+
+.activity-text strong {
+    font-weight: 600;
+}
+
+.activity-hash {
+    font-family: var(--font-code);
+    font-size: 12px;
+    color: var(--outline);
+}
+
+.activity-time {
+    font-size: 11px;
+    color: var(--outline);
+    font-style: italic;
+}
+
+/* Ref list */
+.ref-list {
+    list-style: none;
+}
+
+.ref-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--outline-variant);
+}
+
+.ref-item:last-child {
+    border-bottom: none;
+}
+
+.ref-name {
+    font-family: var(--font-code);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.ref-name.default {
+    color: var(--primary);
+}
+
+.ref-hash {
+    font-family: var(--font-code);
+    font-size: 12px;
+    color: var(--on-surface-variant);
+}
+
+/* Error */
+.error {
+    text-align: center;
+    padding: 48px;
+    color: var(--error);
+}
+
+/* Settings toggle */
+.settings-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    margin-top: var(--space-sm);
+}
+
+.settings-toggle label {
+    font-size: 12px;
+    color: var(--on-surface-variant);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    body.style-gitlab .sidebar {
+        transform: translateX(-100%);
+    }
+
+    body.style-gitlab .main-content {
+        margin-left: 0;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .file-commit-msg,
+    .file-date {
+        display: none !important;
+    }
+}

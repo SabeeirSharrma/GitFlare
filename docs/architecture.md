@@ -152,9 +152,14 @@ gitflare/
 │   │   ├── repo.py           # Repo init, delete, list, metadata
 │   │   ├── hooks.py          # Git hooks (pre-receive, post-receive, update)
 │   │   └── ssh_handler.py    # git-shell integration
-│   └── routes/
-│       ├── git_http.py       # Smart HTTP protocol routes + token auth
-│       └── admin.py          # Admin API (repos, branches, commits, hooks, tokens, ssh-keys)
+│   ├── routes/
+│   │   ├── git_http.py       # Smart HTTP protocol routes + token auth
+│   │   ├── admin.py          # Admin API (repos, branches, commits, hooks, tokens, ssh-keys)
+│   │   └── ui.py             # Web UI routes + API endpoints
+│   └── static/
+│       ├── index.html        # Main SPA page
+│       ├── style.css         # Dark theme styles
+│       └── app.js            # Client-side routing and rendering
 ├── git-credential-gitflare    # Git credential helper
 ├── gitflare.toml              # Config file
 ├── pyproject.toml

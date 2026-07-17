@@ -7,19 +7,26 @@ from fastapi import FastAPI
 
 from .config import load_config
 from .logging import RequestLogMiddleware, setup_logging
-from .routes import admin, git_http
+from .routes import admin, git_http, ui
 
 logger = logging.getLogger("gitflare")
 
 app = FastAPI(
     title="GitFlare",
     description="Self-hosted Git repository hosting server",
-    version="0.4.0",
+    version="0.5.0",
 )
 
-app.add_middleware(RequestLogMiddleware)
+# UI routes (registered before git catch-all)
+app.include_router(ui.router)
+
+# Admin API routes
 app.include_router(admin.router)
+
+# Git HTTP protocol catch-all (must be last)
 app.include_router(git_http.router)
+
+app.add_middleware(RequestLogMiddleware)
 
 
 @app.on_event("startup")
