@@ -123,9 +123,14 @@ gitflare/
 │   │   ├── repo.py           # Repo init, delete, list, metadata
 │   │   ├── hooks.py          # Git hooks (pre-receive, post-receive, update)
 │   │   └── ssh_handler.py    # git-shell integration
-│   └── routes/
-│       ├── git_http.py       # Smart HTTP protocol routes + token auth
-│       └── admin.py          # Admin API (repos, branches, commits, hooks, tokens, ssh-keys)
+│   ├── routes/
+│   │   ├── git_http.py       # Smart HTTP protocol routes + token auth
+│   │   ├── admin.py          # Admin API (repos, branches, commits, hooks, tokens, ssh-keys)
+│   │   └── ui.py             # Web UI routes + API endpoints
+│   └── static/
+│       ├── index.html        # SPA entry point
+│       ├── style.css         # Forge & Flux design system
+│       └── app.js            # Client-side routing and rendering
 ├── git-credential-gitflare    # Git credential helper
 ├── gitflare.toml              # Config file
 ├── pyproject.toml
@@ -135,14 +140,14 @@ gitflare/
 
 ## Roadmap
 
-| Version | Scope |
-|---------|-------|
-| v0.1 | HTTP clone/fetch/push, repo init, basic config, token infra |
-| v0.2 | HTTP push with token auth + credential helper + `gitflare-admin login` |
-| v0.3 | SSH key auth, per-repo auth mode selection, admin API, branch listing |
-| v0.4 | Stable core — structured logging, git hooks, ref management, health check |
-| v0.5 | Web UI — repo browser, file tree, commit log, branch switcher |
-| v1.0 | Production-ready release |
+| Version | Scope | Status |
+|---------|-------|--------|
+| v0.1 | HTTP clone/fetch/push, repo init, basic config, token infra | ✓ |
+| v0.2 | HTTP push with token auth + credential helper + `gitflare-admin login` | ✓ |
+| v0.3 | SSH key auth, per-repo auth mode selection, admin API, branch listing | ✓ |
+| v0.4 | Stable core — structured logging, git hooks, ref management, health check | ✓ |
+| v0.5 | Web UI — repo browser, file tree, commit log, branch switcher | ✓ |
+| v1.0 | Production-ready release | ✓ |
 
 ## License
 

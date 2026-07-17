@@ -2,6 +2,50 @@
 
 ---
 
+## v1.0.0 — Production-Ready Release
+
+**Date:** 2026-07-17
+
+GitFlare v1.0 is the production-ready release. Everything from v0.1 through v0.5 is stable and complete. This release finalizes the project for real-world use.
+
+### What's included
+
+- **All v0.1–v0.5 features** — HTTP clone/fetch/push, token auth, SSH keys, credential helper, admin API, git hooks, structured logging, and Web UI
+- **Version bumped to 1.0.0** — semver stable release
+- **Docs finalized** — all documentation updated and consistent
+
+### Upgrade
+
+```bash
+git pull
+pip install -e .
+```
+
+No breaking changes from v0.5. Drop-in upgrade.
+
+### Quick start
+
+```bash
+# Install
+git clone https://github.com/SabeeirSharrma/GitFlare.git
+cd gitflare
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+
+# Configure
+cp gitflare.toml.example gitflare.toml
+# edit gitflare.toml with your admin token and repos path
+
+# Run
+uvicorn gitflare.main:app --host 0.0.0.0 --port 3000
+
+# Open Web UI
+open http://localhost:3000/
+```
+
+---
+
 ## v0.5.0 — Web UI
 
 **Date:** 2026-07-17
@@ -49,9 +93,9 @@ open http://localhost:3000/
 curl http://localhost:3000/health
 ```
 
-### What's next (v1.0)
+### What's next
 
-- Production-ready release
+- v1.0 — Production-ready release ✓
 
 ---
 

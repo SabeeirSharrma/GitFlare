@@ -13,14 +13,14 @@ GitFlare is a self-hosted Git repository hosting server built in Python. It sits
 
 ## Versioning Roadmap
 
-| Version | Scope |
-|---------|-------|
-| v0.1 | HTTP clone/fetch (read-only), repo init, basic config |
-| v0.2 | HTTP push with token auth + `git-credential-gitflare` helper + `gitflare-admin login` |
-| v0.3 | SSH key auth, per-repo auth mode selection, admin API, branch listing, commit history |
-| v0.4 | Stable core — structured logging, git hooks, ref management, health check |
-| v0.5 | Web UI — repo browser, file tree, commit log, branch switcher |
-| v1.0 | Production-ready release |
+| Version | Scope | Status |
+|---------|-------|--------|
+| v0.1 | HTTP clone/fetch (read-only), repo init, basic config | ✓ |
+| v0.2 | HTTP push with token auth + `git-credential-gitflare` helper + `gitflare-admin login` | ✓ |
+| v0.3 | SSH key auth, per-repo auth mode selection, admin API, branch listing, commit history | ✓ |
+| v0.4 | Stable core — structured logging, git hooks, ref management, health check | ✓ |
+| v0.5 | Web UI — repo browser, file tree, commit log, branch switcher | ✓ |
+| v1.0 | Production-ready release | ✓ |
 
 ---
 
@@ -274,7 +274,7 @@ def run_git_backend(repo_path: str, request: Request) -> Response:
 
 ---
 
-## Admin API (v0.5+)
+## Admin API
 
 All admin routes require `Authorization: Bearer <admin_token>`.
 
@@ -297,7 +297,7 @@ GET    /admin/ssh-keys           # List SSH keys
 GET    /admin/auth/verify        # Validate a token (used by gitflare-admin login)
 ```
 
-## Web UI API (v0.5+)
+## Web UI API
 
 Read-only, no auth required. Used by the web interface.
 
@@ -368,7 +368,7 @@ dependencies = [
 
 `keyring` uses the native keychain on every platform — libsecret/KWallet on Linux, Keychain on macOS, Windows Credential Manager on Windows. No plaintext token files anywhere.
 
-No ORM, no database for v0.1–v0.2 — flat JSON files. SQLite added in v0.3 if needed.
+No ORM, no database — flat JSON files for metadata.
 
 ---
 
@@ -421,15 +421,13 @@ Host gitflare
 
 ---
 
-## v0.1 Quickstart (what to build first)
+## Quickstart
 
 1. `gitflare/config.py` — load `gitflare.toml` (`base_url` is `Optional[str] = None`; anywhere clone URLs are generated, skip or omit the field if unset)
 2. `gitflare/git/repo.py` — `git init --bare` wrapper
 3. `gitflare/git/backend.py` — subprocess wrapper for `git http-backend`
-4. `gitflare/routes/git_http.py` — the 4 smart HTTP routes, no auth yet
+4. `gitflare/routes/git_http.py` — the 4 smart HTTP routes
 5. Wire it up in `main.py`, test with `git clone http://localhost:3000/test.git`
-
-Token auth + `git-credential-gitflare` + `gitflare-admin login` come in v0.2 once the plumbing works.
 
 ---
 

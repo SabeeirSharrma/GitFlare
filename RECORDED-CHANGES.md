@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.0.0] — 2026-07-17
+
+### Changed
+
+- Version bumped to 1.0.0 — production-ready release
+- All documentation finalized and consistent
+
+---
+
 ## [0.5.0] — 2026-07-17
 
 ### Added

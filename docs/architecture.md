@@ -170,5 +170,5 @@ gitflare/
 
 1. **No Git object manipulation** — GitFlare delegates to `git http-backend` and `git-shell`
 2. **Minimal dependencies** — FastAPI, uvicorn, bcrypt, keyring. No ORM, no database.
-3. **Flat file storage** — Each repo has a `gitflare.json` for metadata. No SQLite until v0.3 if needed.
+3. **Flat file storage** — Each repo has a `gitflare.json` for metadata. No database, no ORM.
 4. **Transparent** — Every line of code is auditable. Build from source recommended.

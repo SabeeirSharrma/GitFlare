@@ -4,7 +4,7 @@ import subprocess
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 
 from ..config import load_config
 from ..git.repo import get_metadata, list_repos, repo_exists
